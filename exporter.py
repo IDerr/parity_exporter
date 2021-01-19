@@ -14,6 +14,7 @@ RUN_INTERVAL = int(os.environ.get('RUN_INTERVAL', 10))
 REQUEST_TIME = Summary('request_processing_seconds', 'Time spent processing request')
 ETH_BLOCK_NUMBER = Gauge('eth_block_number', 'The number of most recent block.')
 PEERS = Gauge('peers', 'The number of peers currently connected to the client.', ['status'])
+
 class RPCError(Exception):
     pass
 
@@ -70,7 +71,7 @@ def update_metrics(parity):
 
     ETH_BLOCK_NUMBER.set(parity.eth_blockNumber())
 
-    logging.info('Metric updated')
+    logging.info('Metrics updated')
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
