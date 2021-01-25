@@ -1,10 +1,10 @@
 [Unit]
-Description=Dummy Service
+Description=Parity Exporter
 Wants=network.target
 After=network.target
 
 [Service]
-ExecStart=/opt/parity_exporter/exporter.py
+ExecStart=python3 /opt/parity_exporter/exporter.py
 Restart=always
 
 [Install]
