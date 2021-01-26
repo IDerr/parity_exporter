@@ -14,7 +14,7 @@ RUN_INTERVAL = int(os.environ.get('RUN_INTERVAL', 10))
 REQUEST_TIME = Summary('request_processing_seconds', 'Time spent processing request')
 ETH_BLOCK_NUMBER = Gauge('parity_eth_block_number', 'The number of most recent block.')
 PEERS = Gauge('parity_peers', 'The number of peers currently connected to the client.', ['status'])
-PARITY_VERSION = Gauge('parity_version', 'Client version')
+PARITY_VERSION = Gauge('parity_version', 'Client version', ['version'])
 PARITY_SYNCING = Gauge('parity_syncing', 'Is the client syncing ?')
 GAS_PRICE = Gauge('parity_gas_price', 'Current gas price of the chain')
 
@@ -70,7 +70,7 @@ class Parity:
 
     def is_syncing(self):
         result = self.make_request('eth_syncing')
-        return result
+        return int(result)
 
     def gas_price(self):
         result = self.make_request('eth_gasPrice')
@@ -84,7 +84,7 @@ def update_metrics(parity):
     gas_price = parity.gas_price()
     block_number = parity.eth_blockNumber()
     # Variable set
-    PARITY_VERSION.set(version)
+    PARITY_VERSION.labels(version).set(0)
     PARITY_SYNCING.set(is_syncing)
     PEERS.labels('total').set(total_peers)
     PEERS.labels('active').set(active_peers)
