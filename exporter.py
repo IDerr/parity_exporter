@@ -4,6 +4,7 @@ import logging
 import os 
 import requests
 import time
+import traceback
 from prometheus_client import start_http_server, Summary, Gauge
 
 # Env Variables
@@ -99,5 +100,8 @@ if __name__ == '__main__':
     start_http_server(EXPORTER_PORT)
 
     while True:
-        update_metrics(p)
+        try:
+            update_metrics(p)
+        except Exception as e:
+            print(traceback.format_exc())
         time.sleep(RUN_INTERVAL)
